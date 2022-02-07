@@ -4,7 +4,7 @@ from stozhopt.direction_strat import DirectionStrategy
 
 class StoZhOpt:
 
-    def __init__(self, dir_build : DirectionStrategy, alpha, h, device : str="cpu"):
+    def __init__(self, dir_build,  alpha, h, device : str="cpu"):
         self.dir_build = dir_build
         self.alpha = alpha
         self.device = device
