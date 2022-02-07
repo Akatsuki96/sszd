@@ -14,4 +14,4 @@ class SphericalSmoothingStrategy(DirectionStrategy):
         del Zk
         if self.device == "cuda":
              torch.cuda.empty_cache()
-        return  Qk[:,:self.l]
+        return   Qk[:,:self.l]

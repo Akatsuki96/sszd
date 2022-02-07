@@ -1,19 +1,36 @@
 import torch
 
-from stozhopt.direction_strat import DirectionStrategy
+from stozhopt.direction_strat import DirectionStrategy, CoordinateDescentStrategy, SphericalSmoothingStrategy
+
+
+def str_strategy(dir_build, d, l, device, dtype, seed):
+    if dir_build=='coordinate':
+        return CoordinateDescentStrategy(d, l=l, device=device, dtype=dtype, seed=seed)
+    elif dir_build=='spherical':
+        return SphericalSmoothingStrategy(d, l=l, device=device, dtype=dtype, seed=seed)
+    raise Exception("dir_build should be 'coordinate', 'spherical' or an extension of DirectionStrategy")
+
+def get_strategy(dir_build, d, l, device, dtype, seed):
+    if isinstance(dir_build,DirectionStrategy):
+        print("dir strat")
+        return dir_build
+    elif isinstance(dir_build, str):
+        return str_strategy(dir_build, d, l, device, dtype, seed)
+    raise Exception("dir_build should be 'coordinate', 'spherical' or an extension of DirectionStrategy")
+
+
 
 class StoZhOpt:
 
-    def __init__(self, dir_build,  alpha, h, device : str="cpu"):
-        self.dir_build = dir_build
+    def __init__(self, dir_build, d, l,  alpha, h, device : str="cpu", dtype = torch.float32, seed : int = 12):
+
+        self.dir_build = get_strategy(dir_build, d, l, device, dtype, seed)
+        self.d, self.l = d, l
+        self.dtype = dtype
+        self.seed= seed
         self.alpha = alpha
         self.device = device
-        self.h = h
-        self.t = 1
-
-    @property
-    def l(self):
-        return self.dir_build.l
+        self.h, self.t = h, 1
 
     def get_alpha(self, t):
         if type(self.alpha) == float:
