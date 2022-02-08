@@ -1,6 +1,6 @@
 import torch
 
-from stozhopt.direction_strat import DirectionStrategy, CoordinateDescentStrategy, SphericalSmoothingStrategy
+from stozhopt.direction_strat import CoordinateDescentStrategy, SphericalSmoothingStrategy
 
 
 def str_strategy(dir_build, d, l, device, dtype, seed):
@@ -40,14 +40,6 @@ class StoZhOpt:
         if type(self.h) == float:
             return self.h
         return self.h(t)
-
-    
-
-    def compute_finite_diff(self, fun, x, fx, p_i, h):
-        print("[--] x + p_i * self.h: {}".format(x + p_i * h))
-        print("[--] x + p_i * self.h: {}".format( fun(x + p_i * h)))
-        
-        return (fun(x + p_i * h) - fx)/h * p_i
 
     def optimize(self, fun, x0, T : int = 100, verbose : bool = False):
         x = x0.to(self.device)
