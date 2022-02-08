@@ -11,9 +11,8 @@ def str_strategy(dir_build, d, l, device, dtype, seed):
     raise Exception("dir_build should be 'coordinate', 'spherical' or an extension of DirectionStrategy")
 
 def get_strategy(dir_build, d, l, device, dtype, seed):
-    if isinstance(dir_build,DirectionStrategy):
-        print("dir strat")
-        return dir_build
+    if type(dir_build) == type:
+        return dir_build(d, l=l, device=device, dtype=dtype, seed=seed)
     elif isinstance(dir_build, str):
         return str_strategy(dir_build, d, l, device, dtype, seed)
     raise Exception("dir_build should be 'coordinate', 'spherical' or an extension of DirectionStrategy")
@@ -59,15 +58,14 @@ class StoZhOpt:
             P_k = self.dir_build.build_direction_matrix()
             h_k = self.get_h(t)
             alpha_k = self.get_alpha(t)
-            print("[--] alpha_k: {}\th_k: {}".format(alpha_k, h_k))
 
             grad = 0 
             for i in range(self.l):
-                grad = grad + (fun(x + P_k[:,i] * h_k) - fx)/h_k * P_k[:, i]
+                grad += ((fun(x + P_k[:,i] * h_k) - fx)/h_k) * P_k[:, i]
 
             x = x - alpha_k * grad
             fx = fun(x)
             if verbose:
-                print("[--] t: {}\tx: {}\tf(x): {}\tgrad: {}".format(t, x, fx, grad))
+                print("[--] t: {}\tx: {}\tf(x): {}\tgrad: {}".format(t, x, fx, grad.numpy()))
             
         return x
