@@ -56,6 +56,6 @@ class StoZhOpt:
             x = x - alpha_k * grad
             fx = fun(x)
             if verbose:
-                print("[--] t: {}\tx: {}\tf(x): {}\tgrad: {}".format(t, x, fx, grad))
+                print("[--] t: {}\tx: {}\tf(x): {}".format(t, x, fx))
             
         return x
