@@ -1,5 +1,4 @@
 
-import torch
 import numpy as np
 from stozhopt import StoZhOpt
 import time
@@ -15,9 +14,9 @@ h = lambda t : 1e-7
 
 
 
-optimizer = StoZhOpt('spherical', d, l, alpha, 1e-5, device="cpu", dtype=torch.float32, seed= 13)
+optimizer = StoZhOpt('spherical', d, l, alpha, 1e-10, dtype=np.float32, seed= 13)
 
 opt_time = time.time()
-optimizer.optimize(fun, torch.tensor([-10.0, 5.0, 1.0]), 10, verbose=True)
+optimizer.optimize(fun, np.array([-10.0, 5.0, 1.0], dtype=np.float32), 10, verbose=True)
 
 print("[--] OPT TIME: {}".format(time.time() - opt_time))
