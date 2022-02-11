@@ -1,3 +1,4 @@
+from typing import Callable
 import numpy as np
 from stozhopt.direction_strat import CoordinateDescentStrategy, SphericalSmoothingStrategy
 
@@ -30,12 +31,12 @@ class StoZhOpt:
         self.h, self.t = h, 1
 
     def get_alpha(self, t):
-        if type(self.alpha) == float:
+        if not isinstance(self.alpha, Callable):
             return self.alpha
         return self.alpha(t)
 
     def get_h(self, t):
-        if type(self.h) == float:
+        if not isinstance(self.h, Callable):
             return self.h
         return self.h(t)
 
@@ -48,7 +49,6 @@ class StoZhOpt:
             P_k = self.dir_build.build_direction_matrix()
             h_k = self.get_h(t)
             alpha_k = self.get_alpha(t)
-
             grad = 0 
             for i in range(self.l):
                 grad += ((fun(x + P_k[:,i] * h_k) - fx)/h_k) * P_k[:, i]
@@ -59,3 +59,18 @@ class StoZhOpt:
                 print("[--] t: {}\tx: {}\tf(x): {}".format(t, x, fx))
             
         return x
+
+    def step(self, fun, x, verbose = False):
+        fx = fun(x)
+        P_k = self.dir_build.build_direction_matrix()
+        h_k = self.get_h(self.t)
+        alpha_k = self.get_alpha(self.t)
+
+        grad = 0 
+        for i in range(self.l):
+            grad += ((fun(x + P_k[:,i] * h_k) - fx)/h_k) * P_k[:, i]
+        self.t+=1
+        return x - alpha_k * grad
+
+    def reset(self):
+        self.t = 1

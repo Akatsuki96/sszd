@@ -13,8 +13,8 @@ class SphericalSmoothingStrategy(DirectionStrategy):
 
         Q_k, R_k = np.linalg.qr(Zk, mode="complete")
 
-        diag_R_k = np.diag(R_k).reshape(self.l, 1)
-
-        D = (diag_R_k / np.linalg.norm(diag_R_k, axis=1)) * np.eye(self.d, self.l, dtype=self.dtype)
-
+        diag_R_k = np.diag(R_k)
+    
+        D = (diag_R_k / np.abs(diag_R_k)) * np.eye(self.d, self.l, dtype=self.dtype)
+        
         return  np.sqrt(self.d / self.l) * Q_k.dot(D)
