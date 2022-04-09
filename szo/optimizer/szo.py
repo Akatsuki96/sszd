@@ -19,7 +19,7 @@ def get_strategy(dir_build, d, l, dtype, seed):
 
 
 
-class StoZhOpt:
+class SZO:
 
     def __init__(self, dir_build, d, l,  alpha, h,  dtype = np.float32, seed : int = 12):
 
