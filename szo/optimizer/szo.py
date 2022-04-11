@@ -1,6 +1,6 @@
 from typing import Callable
 import numpy as np
-from stozhopt.direction_strat import CoordinateDescentStrategy, SphericalSmoothingStrategy
+from szo.direction_strat import CoordinateDescentStrategy, SphericalSmoothingStrategy
 
 
 def str_strategy(dir_build, d, l, dtype, seed):
@@ -59,18 +59,36 @@ class SZO:
                 print("[--] t: {}\tx: {}\tf(x): {}".format(t, x, fx))
             
         return x
+    
+    def stochastic_step(self, fun, x, batch, *args):
+        fx = fun(x, batch, *args)
+        P_k = self.dir_build.build_direction_matrix()
+        h_k = self.get_h(self.t)
+        alpha_k = self.get_alpha(self.t)
+
+        grad = np.zeros(self.l)
+        for i in range(self.l):
+            grad[i] = ((fun(x + P_k[:,i] * h_k, batch, *args) - fx)/h_k) #* P_k[:, i]
+        self.t+=1
+        return x - alpha_k * P_k.dot(grad), grad, fx
+
 
     def step(self, fun, x, verbose = False):
         fx = fun(x)
+        if verbose:
+            print("[--] f(x): {}".format(fx))
         P_k = self.dir_build.build_direction_matrix()
         h_k = self.get_h(self.t)
         alpha_k = self.get_alpha(self.t)
 
         grad = 0 
         for i in range(self.l):
+        #    print("\tfx: {}\t P_k[:,i] * h_k: {}\tf: {}".format(fx, x+ P_k[:,i] * h_k,fun(x + P_k[:,i] * h_k) ))
             grad += ((fun(x + P_k[:,i] * h_k) - fx)/h_k) * P_k[:, i]
+        #print("[--] grad: {}".format(grad))
         self.t+=1
-        return x - alpha_k * grad
+        return x - alpha_k * grad, grad
+
 
     def reset(self):
         self.t = 1

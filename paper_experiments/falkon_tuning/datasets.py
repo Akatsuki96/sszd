@@ -17,7 +17,7 @@ class Dataset:
 class CASP(Dataset):
     
     def build_dataset(self):
-        dataset = pd.read_csv(self.path, dtype=np.float32)
+        dataset = pd.read_csv(self.path, dtype=np.float64)
         feature_train = ['F{}'.format(i) for i in range(1, 10)]
         data_x = dataset[feature_train]
         
@@ -27,4 +27,15 @@ class CASP(Dataset):
         dataset = dataset.values
         X, y = dataset[:, 1:], dataset[:, 0]
         
+        return train_test_split(X, y, train_size=self.train_size)
+    
+class HTRU(Dataset):
+    
+    def build_dataset(self):
+        dataset = pd.read_csv(self.path, dtype=np.float64).values
+        X = dataset[:,:-1]
+        y = dataset[:,-1]
+        
+        X = (X - X.mean())/X.std() 
+                
         return train_test_split(X, y, train_size=self.train_size)
