@@ -56,7 +56,7 @@ def szo_experiment(Xtr, Xte, ytr, yte, directions, l):
     h = lambda k : 1/(np.log(k)**2) if k > 1 else 3
     optimizer = SZO(directions, d + 1, l, alpha, h)
     
-    init_config = np.array([1.5 for _ in range(d)] + [1e-6])
+    init_config = np.array([7.5 for _ in range(d)] + [1e-3])
     
     for t in range(T):
         data = train_test_split(Xtr, ytr, train_size=0.7)
@@ -67,15 +67,15 @@ def szo_experiment(Xtr, Xte, ytr, yte, directions, l):
     print("[--] config: ", trsf(torch.tensor(init_config)))
     print("[--] te_err: {}".format(evaluate_configuration(init_config, (Xtr, Xte, ytr, yte))))
     
-l = 2
-M = 200
+l = 9
+M = 500
 T = 50
 trsf = PositiveTransform(1e-9)
 
 
 Xtr, Xte, ytr, yte = load_data()
 print("X shape: ", Xtr.shape[1])
-szo_experiment(Xtr, Xte, ytr, yte, "coordinate", l)
+szo_experiment(Xtr, Xte, ytr, yte, "spherical", l)
 
 
 
