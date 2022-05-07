@@ -153,7 +153,7 @@ M = 500
 T = 30
 trsf = PositiveTransform(1e-9)
 
-reps = 5
+reps = 10
 Xtr, Xte, ytr, yte = load_data()
 
 _ = evaluate_configuration(np.array([1.0 for _ in range(Xtr.shape[1] + 1)]), (Xtr, Xte, ytr, yte))
@@ -168,53 +168,41 @@ orth_options = GDSOptions(10, alpha_max = 10000.0, exp_factor=2, cont_factor=0.5
 n_half_options = GDSOptions(10, alpha_max = 10000.0, exp_factor=2, cont_factor=0.5, gen_strat="n_half")
 
 
+szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "spherical", l, reps=reps)
+store_results("szo_sph_casp.log", szo_sph_ris)
+with open("szo_sph_te_casp.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
 
-#comp_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, comp_options, reps=reps)
-#store_results("compass_casp.log", comp_ris)
-#with open("compass_te_casp.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
-#
-#
-#
-#
-#szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "spherical", l, reps=reps)
-#store_results("szo_sph_casp.log", szo_sph_ris)
-#with open("szo_sph_te_casp.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
-#
-#szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "coordinate", l, reps=reps)
-#store_results("szo_coo_casp.log", szo_sph_ris)
-#with open("szo_coo_te_casp.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
-#       
-#
-#sketch_unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_unit_options, reps=reps)
-#store_results("sk_gauss_casp.log", sketch_unit_ris)
-#with open("sk_gauss_te_casp.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
-#
-#sketch_orth_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_orth_options, reps=reps)
-#store_results("sk_orth_casp.log", sketch_orth_ris)
-#with open("sk_orth_te_casp.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
+szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "coordinate", l, reps=reps)
+store_results("szo_coo_casp.log", szo_sph_ris)
+with open("szo_coo_te_casp.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
+       
 
-#unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, unit_options, reps=reps)
-#store_results("gauss_casp.log", unit_ris)
-#with open("gauss_te_casp.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
-#
-#orth_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, orth_options, reps=reps)
-#store_results("orth_casp.log", orth_ris)
-#with open("orth_te_casp.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
+sketch_unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_unit_options, reps=reps)
+store_results("sk_gauss_casp.log", sketch_unit_ris)
+with open("sk_gauss_te_casp.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
 
+sketch_orth_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_orth_options, reps=reps)
+store_results("sk_orth_casp.log", sketch_orth_ris)
+with open("sk_orth_te_casp.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
+unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, unit_options, reps=reps)
+store_results("gauss_casp.log", unit_ris)
+with open("gauss_te_casp.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
+
+orth_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, orth_options, reps=reps)
+store_results("orth_casp.log", orth_ris)
+with open("orth_te_casp.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
 
 n_half_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, n_half_options, reps=reps)
 store_results("n_half_casp.log", n_half_ris)
@@ -222,13 +210,21 @@ with open("n_half_te_casp.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
 
-#
-#stp_ris, te_err = stp_experiment(Xtr, Xte, ytr, yte, stp_options, reps=reps)
-#store_results("stp_casp.log", stp_ris)
-#with open("stp_te_casp.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
-#
+
+stp_ris, te_err = stp_experiment(Xtr, Xte, ytr, yte, stp_options, reps=reps)
+store_results("stp_casp.log", stp_ris)
+with open("stp_te_casp.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
+
+comp_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, comp_options, reps=reps)
+store_results("compass_casp.log", comp_ris)
+with open("compass_te_casp.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
+
+
+
 
 
 

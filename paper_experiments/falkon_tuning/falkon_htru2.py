@@ -136,8 +136,8 @@ def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5):
 def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5):
     d = Xtr.shape[1] 
     assert l <= d
-    alpha = lambda k:  10/np.sqrt(k) #* 1e-1
-    h = lambda k :  (1/k) #* 1e-1
+    alpha = lambda k:  10/(np.sqrt(k)) #* 1e-1
+    h = lambda k : (1/k) #* 1e-1
     
     init_config_state = np.random.RandomState(12)
     optimizer = SZO(directions, d + 1, l, alpha, h)   
@@ -166,7 +166,7 @@ M = 100
 T = 100
 trsf = PositiveTransform(1e-9)
 
-reps = 5
+reps = 10
 Xtr, Xte, ytr, yte = load_data()
 
 _ = evaluate_configuration(np.array([1.0 for _ in range(Xtr.shape[1] + 1)]), (Xtr, Xte, ytr, yte))
@@ -186,12 +186,6 @@ n_half_options = GDSOptions(9, alpha_max = 10000.0, exp_factor=2, cont_factor=0.
 #
 #
 
-stp_ris, te_err = stp_experiment(Xtr, Xte, ytr, yte, stp_options, reps=reps)
-store_results("stp_htru2.log", stp_ris)
-with open("stp_te_htru2.log", "a") as f:
-    for err in te_err:
-        f.write("{}\n".format(err))
-
 szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "spherical", l, reps=reps)
 store_results("szo_sph_htru2.log", szo_sph_ris)
 with open("szo_sph_te_htru2.log", "a") as f:
@@ -203,6 +197,13 @@ store_results("szo_coo_htru2.log", szo_sph_ris)
 with open("szo_coo_te_htru2.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
+
+stp_ris, te_err = stp_experiment(Xtr, Xte, ytr, yte, stp_options, reps=reps)
+store_results("stp_htru2.log", stp_ris)
+with open("stp_te_htru2.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
+
 
 unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, unit_options, reps=reps)
 store_results("gauss_htru2.log", unit_ris)
@@ -216,11 +217,11 @@ with open("orth_te_htru2.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
 
-#n_half_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, n_half_options, reps=reps)
-#store_results("n_half_htru2.log", n_half_ris)
-#with open("n_half_te_htru2.log", "a") as f:
-#    for err in te_err:
-#        f.write("{}\n".format(err))
+n_half_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, n_half_options, reps=reps)
+store_results("n_half_htru2.log", n_half_ris)
+with open("n_half_te_htru2.log", "a") as f:
+    for err in te_err:
+        f.write("{}\n".format(err))
 
 
 sketch_unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_unit_options, reps=reps)

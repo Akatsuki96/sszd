@@ -26,8 +26,8 @@ labels = [
     'ProbDS orthogonal',
     'ProbDS d/2',
     'STP',
-    'SZO (coordinate)',
-    'SZO (spherical)'
+    'SZD (coordinate)',
+    'SZD (spherical)'
 ]
 
 colors = [
@@ -82,7 +82,7 @@ def read_results(dataset_name):
 
 
 def plot_results(dataset_name):
-    cmap = matplotlib.cm.get_cmap('plasma')
+    cmap = matplotlib.cm.get_cmap('turbo')
 
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 6))
     ax1.set_title("Training error", fontsize=20)
@@ -90,7 +90,7 @@ def plot_results(dataset_name):
     ax3.set_title("Cumulative time", fontsize=20)
     results = read_results(dataset_name)
     for (avg_ctime, std_ctime, avg_tr_err, std_tr_err, avg_v_err, std_v_err, i) in results:
-        rgba = cmap(i/len(results))
+        rgba = cmap((i - 0.01)/len(results))
         ax1.plot(range(len(avg_tr_err)), avg_tr_err, '-', label=labels[i], c=rgba, lw=4)
         ax1.fill_between(range(len(avg_tr_err)), np.array(avg_tr_err) - np.array(std_tr_err), np.array(avg_tr_err) + np.array(std_tr_err),  alpha=0.3, color=rgba)
         ax2.plot(range(len(avg_v_err)), avg_v_err, '-', label=labels[i], c=rgba, lw=4)

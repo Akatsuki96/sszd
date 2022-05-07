@@ -148,8 +148,8 @@ def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5):
 def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5):
     d = Xtr.shape[1] 
     assert l <= d
-    alpha = lambda k:   l/d * (k**(-1/2 + 1e-4)) #* 1e-1
-    h = lambda k :  (1/k**2) #* 1e-1
+    alpha = lambda k:   l/d * 1/(np.sqrt(k)) #* 1e-1
+    h = lambda k :  l/d * (1/k ** 2) #* 1e-1
     
     init_config_state = np.random.RandomState(12)
     optimizer = SZO(directions, d + 1, l, alpha, h)   
@@ -178,7 +178,7 @@ M = 500
 T = 100
 trsf = PositiveTransform(1e-9)
 
-reps = 5
+reps = 10
 Xtr, Xte, ytr, yte = load_data()
 
 _ = evaluate_configuration(np.array([1.0 for _ in range(Xtr.shape[1] + 1)]), (Xtr, Xte, ytr, yte))
