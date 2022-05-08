@@ -26,10 +26,10 @@ colors = [
 
 def plot_results(fname, results, l_values):
     
-    cmap = matplotlib.cm.get_cmap('plasma')
+    cmap = matplotlib.cm.get_cmap('turbo')
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 6))
-    ax1.set_title("Stochastic function values", fontsize=20)
+    ax1.set_title("PL Case: Stochastic function values", fontsize=20)
     ax1.set_xlabel("$k$", fontsize=18)
     ax1.set_ylabel("$F(x_k, \\theta_k)$", fontsize=18)
     #ax1.set_title("Function values", fontsize=20)
@@ -39,7 +39,7 @@ def plot_results(fname, results, l_values):
     ax2.set_xlabel("$k$", fontsize=18)
     ax2.set_ylabel("seconds", fontsize=18)
     for i in range(len(l_values)):
-        rgba = cmap(i/len(l_values))
+        rgba = cmap((i - 0.01)/len(results))
         avg_ctime, std_ctime, avg_fvalues, std_fvalues, avg_Fvalues, std_Fvalues = results[i].get_mean_std()
        # ax1.plot(range(avg_fvalues.shape[0]), avg_fvalues, '-', color=colors[i], label="$l = {}$".format(l_values[i]), linewidth=3)
        # ax1.fill_between(range(avg_fvalues.shape[0]), avg_fvalues - std_fvalues, avg_fvalues + std_fvalues, alpha=0.2, color="{}".format(colors[i]))
@@ -53,7 +53,6 @@ def plot_results(fname, results, l_values):
         ax2.plot(range(avg_ctime.shape[0]), avg_ctime, '-', color=rgba, label="$l = {}$".format(l_values[i]), linewidth=4)
         ax2.fill_between(range(avg_ctime.shape[0]), l_time, avg_ctime + std_ctime, alpha=0.2, color=rgba)
     ax1.legend(loc="best")
-    #ax1.set_yscale("log")
     ax2.set_yscale("log")
     
     ax2.legend(loc="best")
@@ -73,11 +72,11 @@ def sq_norm_experiment(dirtype, fn, reps=10):
     results = [OptResult(budget, reps) for _ in range(len(l_values))]
     for j in range(len(l_values)):
         rnd_state = np.random.RandomState(12) # state for sampling theta
-        alpha = lambda k: float(l_values[j]/d) * (k**(-1/7 + 1e-3)) * 1e-2
-        h = lambda k : (1/k ** 2) * 1e-2  #if k > 1 else 1e-3
+        alpha = lambda k: np.sqrt(l_values[j]/d) * (k**(-1/6)) 
+        h = lambda k : (1/(d*np.sqrt(k)))   #if k > 1 else 1e-3
         optimizer = SZO(dirtype, d, l_values[j], alpha, h, dtype=np.float64)
         for i in range(reps):
-            x = rnd_state.random(d)  # initial guess
+            x = rnd_state.random(d) * (20 - 15) + 15  # initial guess
             theta = rnd_state.randint(d)
             it_time = time.time()
             _ = sq_norm10(x, theta)

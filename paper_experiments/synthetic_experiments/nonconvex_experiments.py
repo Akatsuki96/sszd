@@ -17,27 +17,27 @@ max_init, min_init = 2, -2
 
 labels = [
    # 'CS',
-   # 'STP',
+    'STP',
     'ProbDS orthogonal',
     'ProbDS-RD orthogonal (l = d/2)',
     'ProbDS independent',
     'ProbDS-RD independent (l = d/2)',
     'ProbDS d/2',
-    'SZO-CO (l = d/2)',
-    'SZO-CO (l = d)',
-    'SZO-SP (l = d)',
-    'SZO-SP (l = d/2)',
+    'SZD-CO (l = d/2)',
+    'SZD-CO (l = d)',
+    'SZD-SP (l = d)',
+    'SZD-SP (l = d/2)',
 ]
 figsize = (10, 4)
 
 def plot_results(results):
-    cmap = matplotlib.cm.get_cmap('plasma')
+    cmap = matplotlib.cm.get_cmap('turbo')
 
     fig, ax1 = plt.subplots(figsize=figsize)
    # ax1.set_title("Function values")
     ax1.set_title("Stochastic function values: Non-convex PL Function", fontsize=20)
     for i in range(len(results)):
-        rgba = cmap(i/len(results))
+        rgba = cmap((i - 0.01)/len(results))
         avg_ctime, std_ctime, avg_fvalues, std_fvalues, avg_Fvalues, std_Fvalues = results[i].get_mean_std()
 
         lcb =  avg_Fvalues.reshape(-1) - std_Fvalues.reshape(-1)
@@ -53,7 +53,7 @@ def plot_results(results):
     plt.close(fig)
     fig, ax2 = plt.subplots(figsize=figsize)
     for i in range(len(results)):
-        rgba = cmap(i/len(results))
+        rgba = cmap((i - 0.01)/len(results))
 
         avg_ctime, std_ctime, avg_fvalues, std_fvalues, avg_Fvalues, std_Fvalues = results[i].get_mean_std()
         
@@ -118,8 +118,8 @@ def gds_experiment(target, init_alpha, options, reps=5):
 
 def szo_experiment(target, dir_type, l, reps=5):
 
-    alpha = lambda k: l/d * (1/k) * 1e-2
-    h = lambda k :  (1/k**2) * 1e-3
+    alpha = lambda k:  (1/k) * l/d * 1e-1
+    h = lambda k :  (1/(d*np.sqrt(k))) 
     optimizer = SZO(dir_type, d, l, alpha, h, dtype=np.float32)
     result = OptResult(T, reps)
     
@@ -151,14 +151,14 @@ l = 100
 reps = 5
 forc_fun = lambda k: 10*(k**2)
 
-comp_options = GDSOptions(d, alpha_max=1.0, exp_factor=2, cont_factor=0.5)
-probds_orth = GDSOptions(d, alpha_max=10.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_orth", forcing_fun=forc_fun)
-probds_rd_orth = GDSOptions(d, alpha_max=10.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_orth", sketch=("orthogonal", d//2), forcing_fun=forc_fun)
-probds_indep = GDSOptions(d, alpha_max=10.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_unit", forcing_fun = forc_fun)
-probds_rd_indep = GDSOptions(d, alpha_max=10.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_unit", sketch=("gaussian", d//2), forcing_fun=forc_fun)
-nhalf_indep = GDSOptions(d, alpha_max=5.0, exp_factor=2.0, cont_factor=0.5, gen_strat="n_half", forcing_fun=forc_fun)
+comp_options = GDSOptions(d, alpha_max=100.0, exp_factor=2, cont_factor=0.5)
+probds_orth = GDSOptions(d, alpha_max=100.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_orth")
+probds_rd_orth = GDSOptions(d, alpha_max=100.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_orth", sketch=("orthogonal", d//2))
+probds_indep = GDSOptions(d, alpha_max=100.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_unit")
+probds_rd_indep = GDSOptions(d, alpha_max=100.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_unit", sketch=("gaussian", d//2))
+nhalf_indep = GDSOptions(d, alpha_max=100.0, exp_factor=2.0, cont_factor=0.5, gen_strat="n_half")
 
-#stp = GDSOptions(d, gen_strat="random_unit")
+stp = GDSOptions(d, gen_strat="random_unit")
 
 
 
@@ -174,14 +174,14 @@ szo_coo = szo_experiment(target, "coordinate", l, reps=reps)
 #comp = gds_experiment(target,0.1, comp_options, reps=reps)
 probds_orth = gds_experiment(target, 1.0, probds_orth, reps=reps)
 probds_rd_orth = gds_experiment(target, 1.0, probds_rd_orth, reps=reps)
-probds_indep = gds_experiment(target, 5.0, probds_indep, reps=reps)
+probds_indep = gds_experiment(target, 1.0, probds_indep, reps=reps)
 probds_rd_indep = gds_experiment(target, 1.0, probds_rd_indep, reps=reps)
 nhalf_indep = gds_experiment(target, 1.0, nhalf_indep, reps=reps)
-#stp = stp_experiment(target, 10.0, stp, reps=reps)
+stp = stp_experiment(target, 1.0, stp, reps=reps)
 
 plot_results([
     #comp,
-   # stp,
+    stp,
     probds_orth,
     probds_rd_orth,
     probds_indep,

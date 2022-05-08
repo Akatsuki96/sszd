@@ -8,11 +8,15 @@ class Optimizer:
     def reset(self):
         pass
     
+    
+def default_forcing_fun(alpha, d):
+    return np.min([1e-5, 1e-5 * (alpha**2) * np.linalg.norm(d)**2])
+    
 class GDSOptions:
     
     def __init__(self, d, alpha_max=10.0, exp_factor=1., 
                  cont_factor=0.5, gen_strat="compass", 
-                 sketch = None, forcing_fun = lambda x: x**2):
+                 sketch = None, forcing_fun = default_forcing_fun):
         self.d = d
         self.alpha_max = alpha_max
         self.exp_factor = exp_factor
@@ -131,7 +135,7 @@ class GDS(Optimizer):
         while True:
             for i in range(self.D.shape[0]):
                 value = fun(x + self.alpha * self.D[i], batch)
-                if value < fx - self.forcing_fun(self.alpha):
+                if value < fx - self.forcing_fun(self.alpha, self.D[i]):
                     self.alpha = min(self.alpha * self.exp_factor, self.alpha_max)
                     return x + self.alpha*self.D[i], 1
             if self.alpha < 1e-5:
