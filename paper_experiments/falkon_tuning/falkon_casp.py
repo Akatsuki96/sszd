@@ -69,7 +69,7 @@ def stp_experiment(Xtr, Xte, ytr, yte, options, reps=5):
     te_err = np.zeros(reps)
     for i in range(reps):
         init_sigmas = init_config_state.rand(d) * (1.0 - 0.001) + 0.001
-        init_lam = init_config_state.rand(1) * (1e-3 - 1e-5) + 1e-5
+        init_lam = 1e-5
         
         init_config = np.hstack((init_sigmas, init_lam))
         
@@ -98,7 +98,7 @@ def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5, mname="DS"):
     te_err = np.zeros(reps)
     for i in range(reps):
         init_sigmas = init_config_state.rand(d) * (1.0 - 0.001) + 0.001
-        init_lam = init_config_state.rand(1) * (1e-3 - 1e-5) + 1e-5
+        init_lam = 1e-5
         
         init_config = np.hstack((init_sigmas, init_lam))
         
@@ -123,8 +123,8 @@ def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5, mname="DS"):
 def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5, mname="SZD"):
     d = Xtr.shape[1] 
     assert l <= d
-    alpha = lambda k: (1/np.sqrt(k)) * 1e-2
-    h = lambda k : 1e-1
+    alpha = lambda k:  (k**(-1/4)) * 0.125
+    h = lambda k : 1/k
     
     init_config_state = np.random.RandomState(12)
     optimizer = SZO(directions, d + 1, l, alpha, h)   
@@ -132,7 +132,7 @@ def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5, mname="SZD"):
     te_err = np.zeros(reps)
     for i in range(reps):   
         init_sigmas = init_config_state.rand(d) * (1.0 - 0.001) + 0.001
-        init_lam = init_config_state.rand(1) * (1e-3 - 1e-5) + 1e-5
+        init_lam = 1e-5
         init_config = np.hstack((init_sigmas, init_lam))
         
         for t in range(T):
@@ -148,7 +148,7 @@ def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5, mname="SZD"):
         print("-"*33)
         te_err[i] = evaluate_configuration(init_config, (Xtr, Xte, ytr, yte))
     return result, te_err
-l = 7
+l = 5
 M = 50
 T = 30
 trsf = PositiveTransform(1e-9)
