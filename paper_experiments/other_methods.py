@@ -138,7 +138,7 @@ class GDS(Optimizer):
                 if value < fx - self.forcing_fun(self.alpha, self.D[i]):
                     self.alpha = min(self.alpha * self.exp_factor, self.alpha_max)
                     return x + self.alpha*self.D[i], 1
-            if self.alpha < 1e-5:
+            if self.alpha < 1e-6:
                 return x, 1
             self.alpha *= self.cont_factor
         
