@@ -149,7 +149,6 @@ def szo_experiment(target, dir_type, l, reps=5):
 d = 100
 l = 100
 reps = 5
-forc_fun = lambda k: 10*(k**2)
 
 comp_options = GDSOptions(d, alpha_max=100.0, exp_factor=2, cont_factor=0.5)
 probds_orth = GDSOptions(d, alpha_max=100.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_orth")

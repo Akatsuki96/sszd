@@ -65,7 +65,7 @@ def stp_experiment(Xtr, Xte, ytr, yte, options, reps=5):
     init_config_state = np.random.RandomState(12)
     result = OptResult(T, reps)
     
-    optimizer = STP(init_alpha=10.0, options=options)
+    optimizer = STP(init_alpha=1.0, options=options)
     te_err = np.zeros(reps)
     for i in range(reps):
         init_sigmas = init_config_state.rand(d) * (1.0 - 0.001) + 0.001
@@ -82,13 +82,13 @@ def stp_experiment(Xtr, Xte, ytr, yte, options, reps=5):
             tr_err = evaluate_configuration(init_config, (data[0], data[0], data[2], data[2]))
             init_config = new_config
             result.append_result(i, t, it_time, tr_err, v_err)
-            print("[--] tr_err: {}\tverr: {}\t|g|^2: {}".format(tr_err, v_err, np.linalg.norm(grad)**2))
+            print("[STP] t: {}/{}\ttr_err: {}\tverr: {}\t|g|^2: {}".format(t, T,tr_err, v_err, np.linalg.norm(grad)**2))
         optimizer.reset()
         print("-"*33)
         te_err[i] = evaluate_configuration(init_config, (Xtr, Xte, ytr, yte))
     return result, te_err 
 
-def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5):
+def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5, mname="DS"):
     d = Xtr.shape[1] 
     init_config_state = np.random.RandomState(12)
     
@@ -112,7 +112,7 @@ def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5):
             v_err = evaluate_configuration(init_config, data)
             init_config = new_config
             result.append_result(i, t, it_time, tr_err, v_err)
-            print("[--] tr_err: {}\tverr: {}\t|g|^2: {}".format(tr_err, v_err, np.linalg.norm(grad)**2))
+            print("[{}] tr_err: {}\tverr: {}\t|g|^2: {}".format(mname, tr_err, v_err, np.linalg.norm(grad)**2))
         optimizer.reset()
         print("-"*33)
         te_err[i] = evaluate_configuration(init_config, (Xtr, Xte, ytr, yte))
@@ -120,11 +120,11 @@ def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5):
 
 
 
-def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5):
+def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5, mname="SZD"):
     d = Xtr.shape[1] 
     assert l <= d
-    alpha = lambda k: l/d * 1/np.sqrt(k) #* 1e-1
-    h = lambda k : l/d * (1/k) #* 1e-1
+    alpha = lambda k: (1/np.sqrt(k)) * 1e-2
+    h = lambda k : 1e-1
     
     init_config_state = np.random.RandomState(12)
     optimizer = SZO(directions, d + 1, l, alpha, h)   
@@ -143,68 +143,68 @@ def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5):
             tr_err = evaluate_configuration(init_config, (data[0], data[0], data[2], data[2]))
             init_config = new_config
             result.append_result(i, t, it_time, tr_err, fx)
-            print("[--] t: {}/{}\ttr_err: {}\tverr: {}\t|g|^2: {}".format(t, T, tr_err, fx, np.linalg.norm(grad)**2))
+            print("[{}] t: {}/{}\ttr_err: {}\tverr: {}\t|g|^2: {}".format(mname, t, T, tr_err, fx, np.linalg.norm(grad)**2))
         optimizer.reset()
         print("-"*33)
         te_err[i] = evaluate_configuration(init_config, (Xtr, Xte, ytr, yte))
     return result, te_err
 l = 7
-M = 500
+M = 50
 T = 30
 trsf = PositiveTransform(1e-9)
 
-reps = 10
+reps = 2
 Xtr, Xte, ytr, yte = load_data()
 
 _ = evaluate_configuration(np.array([1.0 for _ in range(Xtr.shape[1] + 1)]), (Xtr, Xte, ytr, yte))
 
 
-comp_options = GDSOptions(10, alpha_max = 10000.0, exp_factor=2, cont_factor=0.5, gen_strat="compass")
+comp_options = GDSOptions(10, alpha_max = 5.0, exp_factor=2, cont_factor=0.5, gen_strat="compass")
 stp_options = GDSOptions(10, gen_strat="random_unit")
-sketch_unit_options = GDSOptions(10, alpha_max = 10000.0, exp_factor=2, cont_factor=0.5, gen_strat="random_unit", sketch=("gaussian", l))
-sketch_orth_options = GDSOptions(10, alpha_max = 10000.0, exp_factor=2, cont_factor=0.5, gen_strat="random_orth", sketch=("orthogonal", l))
-unit_options = GDSOptions(10, alpha_max = 10000.0, exp_factor=2, cont_factor=0.5, gen_strat="random_unit")
-orth_options = GDSOptions(10, alpha_max = 10000.0, exp_factor=2, cont_factor=0.5, gen_strat="random_orth")
-n_half_options = GDSOptions(10, alpha_max = 10000.0, exp_factor=2, cont_factor=0.5, gen_strat="n_half")
+sketch_unit_options = GDSOptions(10, alpha_max = 5.0, exp_factor=2, cont_factor=0.5, gen_strat="random_unit", sketch=("gaussian", l))
+sketch_orth_options = GDSOptions(10, alpha_max = 5.0, exp_factor=2, cont_factor=0.5, gen_strat="random_orth", sketch=("orthogonal", l))
+unit_options = GDSOptions(10, alpha_max = 5.0, exp_factor=2, cont_factor=0.5, gen_strat="random_unit")
+orth_options = GDSOptions(10, alpha_max = 5.0, exp_factor=2, cont_factor=0.5, gen_strat="random_orth")
+n_half_options = GDSOptions(10, alpha_max = 5.0, exp_factor=2, cont_factor=0.5, gen_strat="n_half")
 
 
-szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "spherical", l, reps=reps)
+szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "spherical", l, reps=reps, mname="SZD-SP")
 store_results("szo_sph_casp.log", szo_sph_ris)
 with open("szo_sph_te_casp.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
 
-szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "coordinate", l, reps=reps)
+szo_sph_ris, te_err = szo_experiment(Xtr, Xte, ytr, yte, "coordinate", l, reps=reps, mname="SZD-CO")
 store_results("szo_coo_casp.log", szo_sph_ris)
 with open("szo_coo_te_casp.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
        
 
-sketch_unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_unit_options, reps=reps)
+sketch_unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_unit_options, reps=reps, mname="PDS-RD (gauss)")
 store_results("sk_gauss_casp.log", sketch_unit_ris)
 with open("sk_gauss_te_casp.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
 
-sketch_orth_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_orth_options, reps=reps)
+sketch_orth_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, sketch_orth_options, reps=reps,  mname="PDS-RD (orth)")
 store_results("sk_orth_casp.log", sketch_orth_ris)
 with open("sk_orth_te_casp.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
-unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, unit_options, reps=reps)
+unit_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, unit_options, reps=reps,  mname="PDS (gauss)")
 store_results("gauss_casp.log", unit_ris)
 with open("gauss_te_casp.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
 
-orth_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, orth_options, reps=reps)
+orth_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, orth_options, reps=reps, mname="PDS (orth)")
 store_results("orth_casp.log", orth_ris)
 with open("orth_te_casp.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
 
-n_half_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, n_half_options, reps=reps)
+n_half_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, n_half_options, reps=reps, mname="PDS d/2")
 store_results("n_half_casp.log", n_half_ris)
 with open("n_half_te_casp.log", "a") as f:
     for err in te_err:
@@ -217,11 +217,11 @@ with open("stp_te_casp.log", "a") as f:
     for err in te_err:
         f.write("{}\n".format(err))
 
-comp_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, comp_options, reps=reps)
-store_results("compass_casp.log", comp_ris)
-with open("compass_te_casp.log", "a") as f:
-    for err in te_err:
-        f.write("{}\n".format(err))
+#comp_ris, te_err = ds_experiment(Xtr, Xte, ytr, yte, comp_options, reps=reps, mname="Compass")
+#store_results("compass_casp.log", comp_ris)
+#with open("compass_te_casp.log", "a") as f:
+#    for err in te_err:
+#        f.write("{}\n".format(err))
 
 
 

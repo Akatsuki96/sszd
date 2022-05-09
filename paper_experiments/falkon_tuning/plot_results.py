@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 plt.rc('font', size=12) 
 
 files = [
-    'compass_', 
+    #'compass_', 
     'sk_gauss_',
     'sk_orth_',
     'gauss_',
@@ -19,7 +19,7 @@ files = [
     ]
 
 labels = [
-    'CS',
+    #'CS',
     'ProbDS-RD independent',
     'ProbDS-RD orthogonal',
     'ProbDS independent',
@@ -30,17 +30,7 @@ labels = [
     'SZD (spherical)'
 ]
 
-colors = [
-    'lightskyblue',
-    'indigo',
-    'cadetblue',
-    'purple',
-    'palevioletred',
-    'mediumturquoise',
-    'peru',
-    'darkolivegreen',
-    'black'
-]
+
 
 def read_te(dataset_name):
     results = []

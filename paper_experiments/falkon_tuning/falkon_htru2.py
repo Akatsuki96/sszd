@@ -141,7 +141,7 @@ def ds_experiment(Xtr, Xte, ytr, yte, options, reps=5, mname="DS"):
 def szo_experiment(Xtr, Xte, ytr, yte, directions, l, reps=5, mname="SZD"):
     d = Xtr.shape[1] 
     assert l <= d
-    alpha = lambda k: 100 * (k**(-1/2)) #* 100
+    alpha = lambda k: 50 * (k**(-1/2)) #* 100
     h = lambda k :  1e-2#1/np.sqrt(k) #**2 #* 1e-1
     
     init_config_state = np.random.RandomState(12)
