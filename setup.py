@@ -2,9 +2,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="szo",
-    version="0.0.0",
-    description="SZO: Stochastic Zero-th Order Optimization",
+    name="sszd",
+    version="1.0.0",
+    description="SSZD: Structured Stochastic Zero-th Order Descent",
     python_requires='>=3.6',
     setup_requires=[
         'setuptools>=18.0'
