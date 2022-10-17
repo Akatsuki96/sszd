@@ -2,7 +2,7 @@ import numpy as np
 
 from .dir_strat import DirectionStrategy 
 
-class SphericalSmoothingStrategy(DirectionStrategy):
+class SphericalStrategy(DirectionStrategy):
 
     def __init__(self, d, l=1, dtype=np.float32, seed=None):
         super().__init__(d, l, dtype, seed)
