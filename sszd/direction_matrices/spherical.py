@@ -17,4 +17,6 @@ class SphericalStrategy(DirectionStrategy):
     
         D = (diag_R_k / np.abs(diag_R_k)) * np.eye(self.d, self.l, dtype=self.dtype)
         
-        return  np.sqrt(self.d / self.l) * Q_k.dot(D)
+        P_k =  np.sqrt(self.d / self.l) * Q_k.dot(D)
+
+        return P_k
