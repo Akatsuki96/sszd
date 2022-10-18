@@ -25,7 +25,7 @@ class SSVRZD(SSZD):
             self.f_grad = self.approx_gradient(self.Pk_old, self.h_old, fun, self.x_old)
         self.F_old_grad = self.approx_gradient(self.Pk_old, self.h_old, fun, self.x_old, *args)
         self.F_grad = self.approx_gradient(P_k, h_k, fun, x, *args)
-        print("[--] Old diff: {}".format(np.linalg.norm(self.f_grad - self.F_old_grad)))
+        #print("[--] Old diff: {}".format(np.linalg.norm(self.f_grad - self.F_old_grad)))
         #print("FGRAD: ", self.f_grad.shape, self.F_old_grad.shape, self.F_grad.shape, x.shape)
         if self.only_in_iter and ((self.t - 1) % self.num_iter == 0):
             x_new = x - alpha_k * (self.F_grad + self.f_grad - self.F_old_grad)
