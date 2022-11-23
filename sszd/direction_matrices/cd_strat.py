@@ -10,9 +10,7 @@ class CoordinateDescentStrategy(DirectionStrategy):
 
 
     def build_direction_matrix(self):
-        P = self.I[:, self.rnd_state.choice(self.d, size=self.l,replace=False)]
-        
-        mask = (self.rnd_state.rand(self.l) < 0.5).astype(int)
-        mask[mask==0] = -1
+        indices = self.rnd_state.choice(self.d, size=self.l,replace=False)
+               
+        return np.sqrt(self.d/self.l) * self.I[:, indices] *((self.rnd_state.rand(self.l) < 0.5)*2 - 1)
     
-        return P * mask
