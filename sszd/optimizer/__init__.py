@@ -1,7 +1,5 @@
-from .sszd import SSZD
-from .ssvrzd import SSVRZD
+from sszd.optimizer.sszd import SSZD
 
 __all__ = (
     'SSZD',
-    'SSVRZD'
 )

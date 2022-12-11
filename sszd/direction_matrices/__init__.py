@@ -1,12 +1,12 @@
 
-from .dir_strat import DirectionStrategy
-from .cd_strat import CoordinateDescentStrategy
-from .spherical import SphericalStrategy
-from .smoothing import GaussianStrategy
+from sszd.direction_matrices.direction_matrix import DirectionMatrix
+from sszd.direction_matrices.random_coordinate import RandomCoordinate
+from sszd.direction_matrices.qr_directions import StructuredSphericalDirections, GaussianDirections, SphericalDirections
 
 __all__ =(
-    'DirectionStrategy',
-    'CoordinateDescentStrategy',
-    'SphericalStrategy',
-    'GaussianStrategy'
+    'DirectionMatrix',
+    'RandomCoordinate',
+    'StructuredSphericalDirections',
+    'GaussianDirections',
+    'SphericalDirections'
 )
