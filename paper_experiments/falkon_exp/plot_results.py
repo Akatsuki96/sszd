@@ -3,12 +3,12 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-OUT = './results/casp' # PATH CONTAINING THE RESULTS
-out_1 = "casp_tr_err" # NAME OF (OUTPUT) PLOT with training error
-out_2 = "casp_vl_err" # NAME OF (OUTPUT) PLOT with validation error
-out_3 = "casp_time" # NAME OF (OUTPUT) PLOT with cumulative time
+OUT = './results/htru2' # PATH CONTAINING THE RESULTS
+out_1 = "htru2_tr_err" # NAME OF (OUTPUT) PLOT with training error
+out_2 = "htru2_vl_err" # NAME OF (OUTPUT) PLOT with validation error
+out_3 = "htru2_time" # NAME OF (OUTPUT) PLOT with cumulative time
 
-d = 10
+d = 9
 
 def read_result(label, file):
     mu, std = [], []
@@ -32,7 +32,7 @@ def plot_result(title, labels, file, out, scale=None, ylabel='$f(x_k)$', legend=
         ax.fill_between(range(len(mu)), mu + std, mu - std, alpha=0.2)
     if legend:
         ax.legend(loc="best", fontsize=38)
-    ax.set_xlabel("Function Evaluations", fontsize=50)
+    ax.set_xlabel("$k$", fontsize=50)
     ax.set_ylabel(ylabel, fontsize=50)
     if scale is not None:
         ax.set_yscale(scale)
