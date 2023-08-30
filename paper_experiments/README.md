@@ -2,6 +2,12 @@
 
 This directory contains the scripts used to perform the experiments of the paper.
 
+## Required Packages
+To run these scripts, you need to install some packages i.e. matplotlib and pandas. You can install them using pip
+```
+pip install -r requirements.txt
+```
+
 ## Experiments: Number of directions
 To reproduce Fig. 1, you have to run the script `changing_l.py` that you can find in the directory `number_of_direction`
 
@@ -30,13 +36,22 @@ To reproduce the experiment on California Housing dataset, you have to run the s
 
 To reproduce the experiments on HTRU2 and CASP dataset, you have to download the two datasets and put the csv files in the `data` directory. Then, you have to run the scripts `falkon_htru2.py` and `falkon_casp.py`.
 
-To make the plot, modify the variables `OUT, out_1, out_2, out_3` in `plot_results.py` setting the path of the results and the file names e.g. for california housing results
+To make the plot, modify the variables `OUT, out_1, out_2, out_3, d` in `plot_results.py` setting:
+
+- `OUT` : path of the results e.g. "./results/casp/"
+- `out_1` : name of the output file for the plot with training error
+- `out_2` : name of the output file for the plot with validation error
+- `out_3` : name of the output file for the plot with cumulative time
+- `d` : number of input dimensions (it is 9 for California housing and HTRU2 and it is 10 for CASP)
+
+For instance, for california housing results
 
 ```
 OUT = './results/house'
 out_1 = "house_tr_err"
 out_2 = "house_vl_err"
 out_3 = "house_time"
+d = 9
 ```
 
 Then execute it.
@@ -48,7 +63,7 @@ The datasets can be downloaded from the following links:
 
 
 
-**Attention:** since the Falkon library changed, results can be slightly different from the one reported in the paper.
+**Attention:** since the Falkon library changed, results can be different from the one reported in the paper.
 
 ## Finite-difference comparison
 

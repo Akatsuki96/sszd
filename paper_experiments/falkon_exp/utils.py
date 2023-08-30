@@ -29,7 +29,7 @@ def load_htru2():
     data = np.asarray(data)
     X, y = data[:, :-1], data[:, -1]
     y[y == 0.0] = -1.0
-    Xtr, Xte, ytr, yte = train_test_split(X, y, train_size=0.7)
+    Xtr, Xte, ytr, yte = train_test_split(X, y, train_size=0.7, random_state=np.random.RandomState(121314))
     Xm = Xtr.mean(axis=0)
     Xstd = Xtr.std(axis=0)
     Xtr = (Xtr - Xm) / Xstd
@@ -44,7 +44,7 @@ def load_casp():
 
     X, y = data[:, 1:], data[:, 0]
 
-    Xtr, Xte, ytr, yte = train_test_split(standardize(X), y, train_size=0.8)
+    Xtr, Xte, ytr, yte = train_test_split(standardize(X), y, train_size=0.7, random_state=np.random.RandomState(121314))
 
     return torch.from_numpy(Xtr), torch.from_numpy(Xte), torch.from_numpy(ytr), torch.from_numpy(yte)
             

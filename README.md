@@ -6,9 +6,18 @@ Instructions to reproduce paper experiments are reported in `paper_experiments/R
 
 ## Installation
 The library can be installed by cloning the repository and using pip
+
 ```
 pip install .
 ```
+We suggest to create a conda environment, thus, after cloning the repository, open a terminal inside the sszd directory and execute the following commands
+
+```
+conda create -n sszd_env python=3.11.4
+conda activate sszd_env
+pip install .
+```
+
 
 ## Citation
 If you use this library, please cite it as below

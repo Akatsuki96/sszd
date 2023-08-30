@@ -10,6 +10,6 @@ setup(
         'setuptools>=18.0'
     ],
     packages=find_packages(),
-    install_requires=['numpy>=1.22', 'matplotlib', 'pandas'],
+    install_requires=['numpy>=1.22'],
     include_package_data=True,
 )

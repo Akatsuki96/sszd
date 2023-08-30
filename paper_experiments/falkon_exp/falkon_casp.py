@@ -122,16 +122,16 @@ def run_sszd_experiment(target, init_x, optimizer, T, reps):
         state = np.random.RandomState(12)
 #        x = torch.rand((1, d), generator=init_gen) * (1.0 - 0.1) + 0.001
         x = torch.full((1, d), init_x, dtype=dtype)#.to(device)
-        x[0, -1] = 1e-5
+#        x[0, -1] = 1e-5
 #        state = np.random.RandomState(12)
         X_t, X_v, y_t, y_v = train_test_split(Xtr, ytr, train_size=0.7, random_state=state)
         y_full = target(x, (X_t, X_t, y_t, y_t)).item()
         y_val = target(x, (X_t, X_v, y_t, y_v)).item()
 
-        results.append([y_full for _ in range(l)])
-        results_val.append([y_val for _ in range(l)])
+        results.append([y_full ])
+        results_val.append([y_val ])
 
-        ctime.append([0.0 for _ in range(l)])
+        ctime.append([0.0 ])
         for t in range(T):#//l - 1):
             it_time = time.time()
             X_t, X_v, y_t, y_v = train_test_split(Xtr, ytr, train_size=0.9, random_state=state)
@@ -142,7 +142,7 @@ def run_sszd_experiment(target, init_x, optimizer, T, reps):
             y_val = target(x, (X_t, X_v, y_t, y_v)).item()
             
             it_time = time.time() - it_time
-            print("[SSZD] reps: {}/{}\tt: {}/{}\ty_tr: {}\ty_vl: {}".format(r, reps, t, T - 1, y_full, y_val))
+            print("[SSZD] reps: {}/{}\tt: {}/{}\ty_tr: {}\ty_vl: {}".format(r, reps, t, T , y_full, y_val))
             ctime[r].append(it_time)
             results[r].append(y_full)
             results_val[r].append(y_val)
@@ -220,8 +220,8 @@ l = 5
 
 P1_c = RandomCoordinate(d=d, l=l, seed=seed, dtype=dtype, device=device)
 P1_s = StructuredSphericalDirections(d=d, l=l, seed=seed, dtype=dtype, device=device)
-coo_d = SSZD(P = P1_c, alpha=StepSize(init_value= 0.125, mode='sqrt'),  h=StepSize(init_value=1.0, mode='lin'))
-sph_d = SSZD(P = P1_s, alpha=StepSize(init_value= 0.125, mode= 'sqrt'), h=StepSize(init_value=1.0, mode='lin'))
+coo_d = SSZD(P = P1_c, alpha=StepSize(init_value= 0.5 * l/d, mode='sqrt'),  h=StepSize(init_value=1.0, mode='lin'))
+sph_d = SSZD(P = P1_s, alpha=StepSize(init_value= 0.5 * l/d, mode= 'sqrt'), h=StepSize(init_value=1.0, mode='lin'))
 
 
 out = "./results/casp"
@@ -234,26 +234,27 @@ store_result(results, "{}/sszd_sph_{}".format(out, d))
 
 
 # STP experiment
-results = run_stp_experiment(target, init_x, 10.0, d, T, reps)
+results = run_stp_experiment(target, init_x, 1.0, d, T, reps)
 store_result(results, "{}/stp".format(out))
 #
 # ProbDS
 probds_indep_opt = GDSOptions(d, alpha_max=5.0, exp_factor=2.0, cont_factor=0.15, gen_strat="random_unit")
-results = run_probds_experiment("ProbDS indep", target, init_x, 5.0, probds_indep_opt, d, T, reps)
+results = run_probds_experiment("ProbDS indep", target, init_x, 1.0, probds_indep_opt, d, T, reps)
 store_result(results, "{}/probds_indep".format(out))
 #
 probds_orth_opt = GDSOptions(d, alpha_max=1.0, exp_factor=1.001, cont_factor=0.5, gen_strat="random_orth")
-results = run_probds_experiment("ProbDS orth", target, init_x, 50.0, probds_orth_opt, d, T, reps)
+results = run_probds_experiment("ProbDS orth", target, init_x, 1.0, probds_orth_opt, d, T, reps)
 store_result(results, "{}/probds_orth".format(out))
 #
 probds_nh_opt = GDSOptions(d, alpha_max=1.0, exp_factor=2.0, cont_factor=0.15, gen_strat="n_half")
-results = run_probds_experiment("ProbDS nhalf", target, init_x, 5.0, probds_nh_opt, d, T, reps)
+results = run_probds_experiment("ProbDS nhalf", target, init_x, 1.0, probds_nh_opt, d, T, reps)
 store_result(results, "{}/probds_nhalf".format(out))
 #
 probds_rd_ind_opt = GDSOptions(d, alpha_max=2.0, exp_factor=2.0, cont_factor=0.15, gen_strat="random_unit", sketch=("gaussian", d//2))
-results = run_probds_experiment("ProbDS-RD indip", target, init_x, 5.0, probds_rd_ind_opt, d, T, reps)
+results = run_probds_experiment("ProbDS-RD indip", target, init_x, 1.0, probds_rd_ind_opt, d, T, reps)
 store_result(results, "{}/probds_rd_indep".format(out))
-
-probds_rd_ind_opt = GDSOptions(d, alpha_max=5.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_orth", sketch=("orthogonal", d//2))
-results = run_probds_experiment("ProbDS-RD orth", target, init_x, 5.0, probds_rd_ind_opt, d, T, reps)
+#
+probds_rd_ind_opt = GDSOptions(d, alpha_max=1.0, exp_factor=2.0, cont_factor=0.5, gen_strat="random_orth", sketch=("orthogonal", d//2))
+results = run_probds_experiment("ProbDS-RD orth", target, init_x, 2.0, probds_rd_ind_opt, d, T, reps)
 store_result(results, "{}/probds_rd_orth".format(out))
+#

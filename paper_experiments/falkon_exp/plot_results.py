@@ -3,12 +3,12 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-OUT = './results/house'
-out_1 = "house_tr_err"
-out_2 = "house_vl_err"
-out_3 = "house_time"
+OUT = './results/casp' # PATH CONTAINING THE RESULTS
+out_1 = "casp_tr_err" # NAME OF (OUTPUT) PLOT with training error
+out_2 = "casp_vl_err" # NAME OF (OUTPUT) PLOT with validation error
+out_3 = "casp_time" # NAME OF (OUTPUT) PLOT with cumulative time
 
-d = 9
+d = 10
 
 def read_result(label, file):
     mu, std = [], []
@@ -28,7 +28,7 @@ def plot_result(title, labels, file, out, scale=None, ylabel='$f(x_k)$', legend=
             continue
         mu, std = read_result(dlab, file)
         mu, std = np.asarray(mu), np.asarray(std)
-        ax.plot(range(len(mu)), mu, '-', lw=8, label=label)
+        ax.plot(range(len(mu)), mu, '-', lw=10, label=label)
         ax.fill_between(range(len(mu)), mu + std, mu - std, alpha=0.2)
     if legend:
         ax.legend(loc="best", fontsize=38)
