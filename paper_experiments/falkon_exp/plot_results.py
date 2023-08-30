@@ -4,6 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 OUT = './results/house'
+out_1 = "house_tr_err"
+out_2 = "house_vl_err"
+out_3 = "house_time"
+
 d = 9
 
 def read_result(label, file):
@@ -50,9 +54,7 @@ labels = [
     ('sszd_sph_{}'.format(d), 'S-SZD-SP ($l = d$)')
 ]
 
-out_1 = "house_tr_err"
-out_2 = "house_vl_err"
-out_3 = "house_time"
+
 
 plot_result("Training Error", labels,   "tr_err", out_1, ylabel="MSE", legend=False)
 plot_result("Validation Error", labels, "vl_err", out_2, ylabel="MSE", legend=True)

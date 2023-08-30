@@ -144,14 +144,14 @@ init_x = 0.1
 out = "./results/pl_convex"
 
 # SSZD
-#results = run_sszd_experiment(target, init_x, coo_d, T=T, reps = reps)
-#store_result(results, "{}/sszd_coo_{}".format(out, d))
-#results = run_sszd_experiment(target, init_x, coo_hd, T=T, reps = reps)
-#store_result(results, "{}/sszd_coo_{}".format(out, d//2))
-#results = run_sszd_experiment(target, init_x, sph_d, T=T, reps = reps)
-#store_result(results, "{}/sszd_sph_{}".format(out, d))
-#results = run_sszd_experiment(target, init_x, sph_hd, T=T, reps = reps)
-#store_result(results, "{}/sszd_sph_{}".format(out, d//2))
+results = run_sszd_experiment(target, init_x, coo_d, T=T, reps = reps)
+store_result(results, "{}/sszd_coo_{}".format(out, d))
+results = run_sszd_experiment(target, init_x, coo_hd, T=T, reps = reps)
+store_result(results, "{}/sszd_coo_{}".format(out, d//2))
+results = run_sszd_experiment(target, init_x, sph_d, T=T, reps = reps)
+store_result(results, "{}/sszd_sph_{}".format(out, d))
+results = run_sszd_experiment(target, init_x, sph_hd, T=T, reps = reps)
+store_result(results, "{}/sszd_sph_{}".format(out, d//2))
 
 # STP experiment
 results = run_stp_experiment(target, init_x, 10.0, d, T, reps)

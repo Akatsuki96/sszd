@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 
 import os
 import numpy as np
+import pandas as pd
 
 def store_result(results, out):
     os.makedirs("{}".format(out), exist_ok = True)
@@ -33,6 +34,18 @@ def load_htru2():
     Xstd = Xtr.std(axis=0)
     Xtr = (Xtr - Xm) / Xstd
     Xte = (Xte - Xm) / Xstd
+    return torch.from_numpy(Xtr), torch.from_numpy(Xte), torch.from_numpy(ytr), torch.from_numpy(yte)
+            
+def standardize(X):
+    return (X - X.mean())/X.std()
+            
+def load_casp():
+    data = pd.read_csv("../data/CASP.csv",dtype=np.float32).values[1:,:]
+
+    X, y = data[:, 1:], data[:, 0]
+
+    Xtr, Xte, ytr, yte = train_test_split(standardize(X), y, train_size=0.8)
+
     return torch.from_numpy(Xtr), torch.from_numpy(Xte), torch.from_numpy(ytr), torch.from_numpy(yte)
             
 def build_dataset():

@@ -1,7 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-out = './results/log_reg'
+title = "PL Non-convex"
+out = './results/non_convex'
+fname_out = "nn_conv"
+l = 100 # PUT THE NUMBER OF DIRECTIONS USED (you can find this number in the scripts or inside the directory results)
 
 def read_result(label, file):
     mu, std = [], []
@@ -40,15 +43,15 @@ def plot_result(title, labels, file, out, scale=None, legend=True):
 
 labels = [
 #    ('sszd_coo_100', 'S-SZD-CO'),
-    ('sszd_sph_20', 'S-SZD'),
+    (f'sszd_sph_{l}', 'S-SZD'),
     ('nesterov', 'Nesterov & Spokoiny'),
     ('duchi', 'Duchi et al.'),
     ('flax', 'Flaxman et al.'),
     ('berash', 'Berahas et al.')
 ]
 legend = True
-plot_result("Logistic Regression", labels, "mean_value", "logreg_fun_vals", "log", legend=legend)
-plot_result("Cumulative Time", labels, "ctime", "logreg_convex_time", "log", legend=legend)
+plot_result(title, labels, "mean_value", f"{fname_out}_fun_vals", "log", legend=legend)
+plot_result("Cumulative Time", labels, "ctime", f"{fname_out}_convex_time", "log", legend=legend)
 
 
 

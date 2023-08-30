@@ -1,7 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-out = './results/non_convex'
+title = "PL Convex"
+
+out = './results/pl_convex'
+fname_out = "pl_convex"
 
 def read_result(label, file):
     mu, std = [], []
@@ -50,8 +53,8 @@ labels = [
     ('sszd_sph_100', 'S-SZD-SP ($l = d$)')
 ]
 legend = True
-plot_result("Non-convex PL", labels, "mean_value", "nonconv_fun_vals", legend=legend)
-plot_result("Non-convex PL: Cumulative Time", labels, "ctime", "nonconv_time", "log", legend=legend)
+plot_result(title, labels, "mean_value", f"{fname_out}_fun_vals", legend=legend)
+plot_result(f"{title}: Cumulative Time", labels, "ctime", f"{fname_out}_time", "log", legend=legend)
 
 
 

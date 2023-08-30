@@ -23,8 +23,8 @@ from utils import *
 from other_methods import *
 
 
-M = 20
-Xtr, Xte, ytr, yte = load_htru2()
+M = 50
+Xtr, Xte, ytr, yte = load_casp()
 #print(Xtr.shape)
 #exit()
 trsf = PositiveTransform(1e-9)
@@ -38,7 +38,7 @@ def build_falkon(parameters):
         'kernel' : GaussianKernel(trsf(parameters[:-1])),
         'penalty' : trsf(parameters[-1]),#),
         'M' : M,
-        'maxiter' : 10,#00,
+        'maxiter' : 2,
         'options' : FalkonOptions(keops_active="no", use_cpu=False, debug=False)
     }
     return Falkon(**config)
@@ -68,7 +68,6 @@ def run_probds_experiment(name, target, init_x, init_alpha, options, d, T, reps)
         X_t, X_v, y_t, y_v = train_test_split(Xtr, ytr, train_size=0.7, random_state=state)
         
         x = torch.full((1, d), init_x, dtype=dtype).to(device)
-        x[0, -1] = 1e-6
         y_full = target(x, (X_t, X_t, y_t, y_t)).item()
         y_val = target(x, (X_t, X_v, y_t, y_v)).item()
         results.append([y_full])
@@ -82,7 +81,7 @@ def run_probds_experiment(name, target, init_x, init_alpha, options, d, T, reps)
             X_t, X_v, y_t, y_v = train_test_split(Xtr, ytr, train_size=0.9, random_state=state)
 
             x, num_eval = optimizer.stochastic_step(target, x, (X_t, X_v, y_t, y_v))
-            # x = torch.clamp(x, min=1e-4)
+#            x = torch.clamp(x, min=1e-5, max=100.0)
             y_full = target(x, (X_t, X_t, y_t, y_t)).item()
             y_val = target(x, (X_t, X_v, y_t, y_v)).item()
             it_time = time.time() - it_time
@@ -92,12 +91,12 @@ def run_probds_experiment(name, target, init_x, init_alpha, options, d, T, reps)
             ctime[r].append(it_time)
             results[r].append(y_full)
             results_val[r].append(y_val)
-            #if num_eval -1 > 0:
-            #    for _ in range(num_eval - 1):
-            #        results[r].append(y_full)
-            #        results_val[r].append(y_val)
-            #        ctime[r].append(0.0)
-            t+=1#num_eval
+#            if num_eval -1 > 0:
+#                for _ in range(num_eval - 1):
+#                    results[r].append(y_full)
+#                    results_val[r].append(y_val)
+#                    ctime[r].append(0.0)
+            t+=1 #num_eval
         optimizer.reset()
     ctime = np.cumsum(ctime, 1)
     
@@ -117,26 +116,28 @@ def run_sszd_experiment(target, init_x, optimizer, T, reps):
     stoc_gen = torch.Generator()
     stoc_gen.manual_seed(seed)
 
+    init_gen = torch.Generator()
+    init_gen.manual_seed(12)
     for r in range(reps):
         state = np.random.RandomState(12)
+#        x = torch.rand((1, d), generator=init_gen) * (1.0 - 0.1) + 0.001
         x = torch.full((1, d), init_x, dtype=dtype)#.to(device)
-        x[0, -1] = 1e-6
+        x[0, -1] = 1e-5
+#        state = np.random.RandomState(12)
         X_t, X_v, y_t, y_v = train_test_split(Xtr, ytr, train_size=0.7, random_state=state)
         y_full = target(x, (X_t, X_t, y_t, y_t)).item()
         y_val = target(x, (X_t, X_v, y_t, y_v)).item()
-        results.append([y_full])
-        results_val.append([y_val])
-        ctime.append([0.0])
-#        results.append([y_full for _ in range(l)])
-#        results_val.append([y_val for _ in range(l)])
 
-#        ctime.append([0.0 for _ in range(l)])
-        for t in range(T - 1):
+        results.append([y_full for _ in range(l)])
+        results_val.append([y_val for _ in range(l)])
+
+        ctime.append([0.0 for _ in range(l)])
+        for t in range(T):#//l - 1):
             it_time = time.time()
             X_t, X_v, y_t, y_v = train_test_split(Xtr, ytr, train_size=0.9, random_state=state)
             x = optimizer.step(target, x, (X_t, X_v, y_t, y_v))
-            # x = torch.clamp(x, min=1e-4)
-            #print(x)
+ #           x = torch.clamp(x, min=1e-5, max=100.0)
+           #print(x)
             y_full = target(x, (X_t, X_t, y_t, y_t)).item()
             y_val = target(x, (X_t, X_v, y_t, y_v)).item()
             
@@ -171,7 +172,6 @@ def run_stp_experiment(target, init_x, init_alpha, d, T, reps):
         X_t, X_v, y_t, y_v = train_test_split(Xtr, ytr, train_size=0.7, random_state=state)
 
         x = torch.full((1, d), init_x, dtype=dtype)#.to(device)
-        x[0, -1] = 1e-6
         y_full = target(x, (X_t, X_t, y_t, y_t)).item()
         y_val = target(x, (X_t, X_v, y_t, y_v)).item()
         results.append([y_full])
@@ -184,7 +184,8 @@ def run_stp_experiment(target, init_x, init_alpha, d, T, reps):
 
            # z = torch.randint(low=0, high=d,size=(1,),generator=stoc_gen).item()
             x, _, _ = optimizer.stochastic_step(target, x, (X_t, X_v, y_t, y_v))
-            # x = torch.clamp(x, min=1e-4)
+#            x = torch.clamp(x, min=1e-4)
+#            x = torch.clamp(x, min=1e-5, max=100.0)
             y_full = target(x, (X_t, X_t, y_t, y_t)).item()
             y_val = target(x, (X_t, X_v, y_t, y_v)).item()
             it_time = time.time() - it_time
@@ -204,7 +205,7 @@ def run_stp_experiment(target, init_x, init_alpha, d, T, reps):
 seed=121212
 dtype = torch.float64
 device = 'cpu' #'cuda' if torch.cuda.is_available() else 'cpu'
-init_x = 18.5
+init_x = 0.50
 
 params = torch.full((1, Xtr.shape[1] + 1 ), init_x)#.to(device)
 params[0, -1] = 1e-4
@@ -215,33 +216,33 @@ T = 30
 reps = 2
 
 d = Xtr.shape[1] + 1
-l = 4
+l = 5
 
 P1_c = RandomCoordinate(d=d, l=l, seed=seed, dtype=dtype, device=device)
 P1_s = StructuredSphericalDirections(d=d, l=l, seed=seed, dtype=dtype, device=device)
-coo_d = SSZD(P = P1_c, alpha=StepSize(init_value= 20.0 , mode='sqrt'),  h=StepSize(init_value=1.0, mode='lin'))
-sph_d = SSZD(P = P1_s, alpha=StepSize(init_value= 20.0 , mode= 'sqrt'), h=StepSize(init_value=1.0, mode='lin'))
+coo_d = SSZD(P = P1_c, alpha=StepSize(init_value= 0.125, mode='sqrt'),  h=StepSize(init_value=1.0, mode='lin'))
+sph_d = SSZD(P = P1_s, alpha=StepSize(init_value= 0.125, mode= 'sqrt'), h=StepSize(init_value=1.0, mode='lin'))
 
 
-out = "./results/htru2"
+out = "./results/casp"
 
 # SSZD
 results = run_sszd_experiment(target, init_x, coo_d, T=T, reps = reps)
 store_result(results, "{}/sszd_coo_{}".format(out, d))
 results = run_sszd_experiment(target, init_x, sph_d, T=T, reps = reps)
 store_result(results, "{}/sszd_sph_{}".format(out, d))
-#
-#
-## STP experiment
-results = run_stp_experiment(target, init_x, 1.0, d, T, reps)
+
+
+# STP experiment
+results = run_stp_experiment(target, init_x, 10.0, d, T, reps)
 store_result(results, "{}/stp".format(out))
 #
 # ProbDS
-probds_indep_opt = GDSOptions(d, alpha_max=10.0, exp_factor=2.0, cont_factor=0.25, gen_strat="random_unit")
-results = run_probds_experiment("ProbDS indep", target, init_x, 1.0, probds_indep_opt, d, T, reps)
+probds_indep_opt = GDSOptions(d, alpha_max=5.0, exp_factor=2.0, cont_factor=0.15, gen_strat="random_unit")
+results = run_probds_experiment("ProbDS indep", target, init_x, 5.0, probds_indep_opt, d, T, reps)
 store_result(results, "{}/probds_indep".format(out))
 #
-probds_orth_opt = GDSOptions(d, alpha_max=10.0, exp_factor=2.0, cont_factor=0.25, gen_strat="random_orth")
+probds_orth_opt = GDSOptions(d, alpha_max=1.0, exp_factor=1.001, cont_factor=0.5, gen_strat="random_orth")
 results = run_probds_experiment("ProbDS orth", target, init_x, 50.0, probds_orth_opt, d, T, reps)
 store_result(results, "{}/probds_orth".format(out))
 #

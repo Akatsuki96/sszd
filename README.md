@@ -1,7 +1,8 @@
 # S-SZD: Structured Stochastic Zero-th order Descent
 Implementation of S-SZD algorithm introduced in *Stochastic Zeroth order Descent with Structured Directions*. 
 
-A preprint of the paper can be found at the following link: https://arxiv.org/abs/2206.05124v1
+
+Instructions to reproduce paper experiments are reported in `paper_experiments/README.md`
 
 ## Installation
 The library can be installed by cloning the repository and using pip

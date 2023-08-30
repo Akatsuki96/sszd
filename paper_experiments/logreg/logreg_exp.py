@@ -169,38 +169,38 @@ init_x = 0.2 #torch.zeros(d, dtype=dtype, device=device)
 out = "./results/logreg_convex"
 
 # SSZD
-#results = run_sszd_experiment(target, init_x, coo_d, T=T, reps = reps)
-#store_result(results, "{}/sszd_coo_{}".format(out, d))
-#results = run_sszd_experiment(target, init_x, coo_hd, T=T, reps = reps)
-#store_result(results, "{}/sszd_coo_{}".format(out, d//2))
-#results = run_sszd_experiment(target, init_x, sph_d, T=T, reps = reps)
-#store_result(results, "{}/sszd_sph_{}".format(out, d))
-#results = run_sszd_experiment(target, init_x, sph_hd, T=T, reps = reps)
-#store_result(results, "{}/sszd_sph_{}".format(out, d//2))
+results = run_sszd_experiment(target, init_x, coo_d, T=T, reps = reps)
+store_result(results, "{}/sszd_coo_{}".format(out, d))
+results = run_sszd_experiment(target, init_x, coo_hd, T=T, reps = reps)
+store_result(results, "{}/sszd_coo_{}".format(out, d//2))
+results = run_sszd_experiment(target, init_x, sph_d, T=T, reps = reps)
+store_result(results, "{}/sszd_sph_{}".format(out, d))
+results = run_sszd_experiment(target, init_x, sph_hd, T=T, reps = reps)
+store_result(results, "{}/sszd_sph_{}".format(out, d//2))
 
 
 # STP experiment
-#results = run_stp_experiment(target, init_x, 1.0, d, T, reps)
-#store_result(results, "{}/stp".format(out))
+results = run_stp_experiment(target, init_x, 1.0, d, T, reps)
+store_result(results, "{}/stp".format(out))
 
 # ProbDS
 probds_indep_opt = GDSOptions(d, alpha_max=1e-2, exp_factor=1.70, cont_factor=0.5, gen_strat="random_unit")
 results = run_probds_experiment("ProbDS indep", target, init_x, 1e-2, probds_indep_opt, d, T, reps)
 store_result(results, "{}/probds_indep".format(out))
 #
-#probds_orth_opt = GDSOptions(d, alpha_max=5e-3, exp_factor=1.0001, cont_factor=0.75, gen_strat="random_orth")
-#results = run_probds_experiment("ProbDS orth", target, init_x, 1e-3, probds_orth_opt, d, T, reps)
-#store_result(results, "{}/probds_orth".format(out))
+probds_orth_opt = GDSOptions(d, alpha_max=5e-3, exp_factor=1.0001, cont_factor=0.75, gen_strat="random_orth")
+results = run_probds_experiment("ProbDS orth", target, init_x, 1e-3, probds_orth_opt, d, T, reps)
+store_result(results, "{}/probds_orth".format(out))
 #
-#probds_nh_opt = GDSOptions(d, alpha_max=1.0, exp_factor=1.000001, cont_factor=0.9, gen_strat="n_half")
-#results = run_probds_experiment("ProbDS nhalf", target, init_x, 5e-3, probds_nh_opt, d, T, reps)
-#store_result(results, "{}/probds_nhalf".format(out))
+probds_nh_opt = GDSOptions(d, alpha_max=1.0, exp_factor=1.000001, cont_factor=0.9, gen_strat="n_half")
+results = run_probds_experiment("ProbDS nhalf", target, init_x, 5e-3, probds_nh_opt, d, T, reps)
+store_result(results, "{}/probds_nhalf".format(out))
 #
-#probds_rd_ind_opt = GDSOptions(d, alpha_max=5e-3, exp_factor=1.001, cont_factor=0.75, gen_strat="random_unit", sketch=("gaussian", d//2))
-#results = run_probds_experiment("ProbDS-RD indip", target, init_x, 1e-3, probds_rd_ind_opt, d, T, reps)
-#store_result(results, "{}/probds_rd_indep".format(out))
+probds_rd_ind_opt = GDSOptions(d, alpha_max=5e-3, exp_factor=1.001, cont_factor=0.75, gen_strat="random_unit", sketch=("gaussian", d//2))
+results = run_probds_experiment("ProbDS-RD indip", target, init_x, 1e-3, probds_rd_ind_opt, d, T, reps)
+store_result(results, "{}/probds_rd_indep".format(out))
 #
-#probds_rd_ind_opt = GDSOptions(d, alpha_max=1e-2, exp_factor=1.001, cont_factor=0.5, gen_strat="random_orth", sketch=("orthogonal", d//2))
-#results = run_probds_experiment("ProbDS-RD orth", target, init_x, 1e-3, probds_rd_ind_opt, d, T, reps)
-#store_result(results, "{}/probds_rd_orth".format(out))
+probds_rd_ind_opt = GDSOptions(d, alpha_max=1e-2, exp_factor=1.001, cont_factor=0.5, gen_strat="random_orth", sketch=("orthogonal", d//2))
+results = run_probds_experiment("ProbDS-RD orth", target, init_x, 1e-3, probds_rd_ind_opt, d, T, reps)
+store_result(results, "{}/probds_rd_orth".format(out))
 #
