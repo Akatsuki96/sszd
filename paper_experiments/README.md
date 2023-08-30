@@ -8,6 +8,8 @@ To run these scripts, you need to install some packages i.e. matplotlib and pand
 pip install -r requirements.txt
 ```
 
+Moreover, you have to install torch
+
 ## Experiments: Number of directions
 To reproduce Fig. 1, you have to run the script `changing_l.py` that you can find in the directory `number_of_direction`
 
