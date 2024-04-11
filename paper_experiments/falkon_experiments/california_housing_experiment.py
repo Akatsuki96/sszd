@@ -14,6 +14,8 @@ from sklearn.model_selection import train_test_split
 from falkon import Falkon
 from falkon.kernels import GaussianKernel
 from falkon.center_selection import CenterSelector
+from falkon.options import FalkonOptions
+
 
 from sszd import SSZD, DDS, SketchDS, RandomSearch, STP, SVRZ
 from sszd.optimizers.opt import Optimizer
@@ -129,8 +131,9 @@ def run_experiment(x0, optimizer : Optimizer, T, reps=1, seed = 1231414):
             model = Falkon(kernel=kernel, 
                            penalty=lam,  
                            M = M,
-                            center_selection='uniform',
-                           seed = seed
+                           center_selection='uniform',
+
+                           seed = seed, options=FalkonOptions(use_cpu=True)
                            )
             model.fit(X_tr, y_tr)
             if z is None:
@@ -155,7 +158,8 @@ def run_experiment(x0, optimizer : Optimizer, T, reps=1, seed = 1231414):
                        penalty=transform(opt_ris['x'][-1]), 
                        M = M,
                        center_selection='uniform',
-                       seed = seed
+                       seed = seed,
+                       options=FalkonOptions(use_cpu=True)
                        )
         model.fit(X_train, Y_train)
         preds = model.predict(X_test)
