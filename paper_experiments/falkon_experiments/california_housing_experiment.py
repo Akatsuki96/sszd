@@ -112,6 +112,7 @@ def get_algorithm(target, d, T, opt_name, params):
 def run_experiment(x0, optimizer : Optimizer, T, reps=1, seed = 1231414):
     training_errors = []
     validation_errors = []
+    tr_errors = []
     test_errors = []
     num_evals = []
     rnd_state = np.random.RandomState(seed=seed)
@@ -119,7 +120,7 @@ def run_experiment(x0, optimizer : Optimizer, T, reps=1, seed = 1231414):
         return rnd_state.choice(X_vl.shape[0], size=1, replace=False)
     for r in range(reps):
         print(f"[{r + 1}/{reps}] Training with {optimizer.name}")
-        training_errors.append([])
+        training_errors = [] #.append([])
         def target(x : torch.Tensor, z = None):
             # x = [sigma_1, ..., sigma_d, lam]
             lam =  transform(x[-1])
@@ -135,13 +136,21 @@ def run_experiment(x0, optimizer : Optimizer, T, reps=1, seed = 1231414):
             if z is None:
                 tr_err, vl_err = mse(model.predict(X_tr), y_tr), mse(model.predict(X_vl), y_vl)
                 print(f"\t[--] training error = {tr_err}\tvalidation error = {vl_err}")
-                training_errors[r].append(tr_err)
+                training_errors.append(tr_err)
                 return vl_err #(model.predict(X_vl) - y_vl).square().mean()
             return mse(model.predict(X_vl[z, :]), y_vl[z]) #(model.predict(X_vl[z, :]) - y_vl[z]).square().mean()
         optimizer.target = target
         opt_ris = optimizer.optimize(x0.clone(), sample_z=sample_z, T = T, verbose=False, return_trace=True)
-        validation_errors.append(opt_ris['fun_values'])
-        num_evals.append(opt_ris['num_evals'])
+        tr_err, vl_err = [], []
+        print(len(training_errors), opt_ris['num_evals'])
+        for i in range(len(opt_ris['num_evals'])):
+            tr_err += [training_errors[i] for _ in range(opt_ris['num_evals'][i])]
+            vl_err += [opt_ris['fun_values'][i] for _ in range(opt_ris['num_evals'][i])]
+        validation_errors.append(vl_err)
+        tr_errors.append(tr_err)
+
+
+#        num_evals.append(opt_ris['num_evals'])
         model = Falkon(kernel=GaussianKernel(sigma=transform(opt_ris['x'][:-1])), 
                        penalty=transform(opt_ris['x'][-1]), 
                        M = M,
@@ -152,7 +161,7 @@ def run_experiment(x0, optimizer : Optimizer, T, reps=1, seed = 1231414):
         preds = model.predict(X_test)
         test_errors.append((preds - Y_test).square().mean().item())
         print("-"*55)
-    return training_errors, validation_errors, test_errors, num_evals
+    return tr_errors, validation_errors, test_errors#, num_evals
 
 
 
@@ -194,16 +203,15 @@ def main(args):
     opt = get_algorithm(None, d, T, args.opt_name, args)
     x0 = torch.full((d  , ), 1.0, dtype=torch.float64)
 
-    training_errors, validation_errors, test_errors, num_evals = run_experiment(x0, opt, T, reps=args.reps, seed = 1231414)
+    training_errors, validation_errors, test_errors = run_experiment(x0, opt, T, reps=args.reps, seed = 1231414)
 
     mu_tr, sigma_tr = np.mean(training_errors, axis=0), np.std(training_errors, axis=0)
     mu_vl, sigma_vl = np.mean(validation_errors, axis=0), np.std(validation_errors, axis=0)
     mu_te, sigma_te = np.mean(test_errors), np.std(test_errors)
-    mu_ne, sigma_ne = np.mean(num_evals, axis=0), np.std(num_evals, axis=0)
 
     with open(f"{OUT_DIR}/{args.out_file}_trace.log", 'w') as f:
         for i in range(mu_tr.shape[0]):
-            f.write("{},{},{},{},{},{}\n".format(mu_tr[i], sigma_tr[i], mu_vl[i], sigma_vl[i], mu_ne[i], sigma_ne[i]))
+            f.write("{},{},{},{}\n".format(mu_tr[i], sigma_tr[i], mu_vl[i], sigma_vl[i]))
             f.flush()
 
     with open(f"{OUT_DIR}/{args.out_file}_test_error.log", 'w') as f:
