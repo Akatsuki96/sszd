@@ -28,13 +28,15 @@ rnd_state = np.random.RandomState(12131415)
 
 data = pd.read_csv("./data/casp/CASP.csv")
 
-X = data.values[:, 1:]
-y = data.values[:, 0]
+
+X = data.values[:10000, 1:]
+y = data.values[:10000, 0]
+
+print(X.shape)
 
 X = (X - X.mean()) / X.std()
 
 y = (y - y.min()) / (y.max() - y.min())
-
 X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.33, random_state=rnd_state, shuffle=True)
 
 
