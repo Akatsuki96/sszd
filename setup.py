@@ -5,7 +5,7 @@ setup(
     name="sszd",
     version="1.0.0",
     description="SSZD: Structured Stochastic Zero-th Order Descent",
-    python_requires='>=3.10',
+    python_requires='>=3.9',
     setup_requires=[
         'setuptools>=18.0'
     ],
