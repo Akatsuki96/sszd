@@ -1,0 +1,2 @@
+nohup python3 california_housing_experiment.py "sszd" 500 --sszd-alpha 10.0 --sszd-l 4 --sszd-h 1.0 --sszd-dirtype 'orthogonal' --reps 10 --out-file "sszd_4_orth" > out_sszd4 &
+nohup python3 california_housing_experiment.py "sszd" 500 --sszd-alpha 10.0 --sszd-l 9 --sszd-h 1.0 --sszd-dirtype 'orthogonal' --reps 10 --out-file "sszd_9_orth" > out_sszd9 &

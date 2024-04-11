@@ -13,7 +13,7 @@ pip install .
 We suggest to create a conda environment, thus, after cloning the repository, open a terminal inside the sszd directory and execute the following commands
 
 ```
-conda create -n sszd_env python=3.11.4
+conda create -n sszd_env python=3.12.2 numpy=1.26.4 cupy
 conda activate sszd_env
 pip install .
 ```

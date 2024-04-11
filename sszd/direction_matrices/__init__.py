@@ -1,12 +1,13 @@
 
 from sszd.direction_matrices.direction_matrix import DirectionMatrix
-from sszd.direction_matrices.random_coordinate import RandomCoordinate
-from sszd.direction_matrices.qr_directions import StructuredSphericalDirections, GaussianDirections, SphericalDirections
+from sszd.direction_matrices.unstructured_directions import GaussianDirections, SphericalDirections
+from sszd.direction_matrices.structured_directions import QRDirections, RandomCoordinate, RandomHouseholder
 
 __all__ =(
     'DirectionMatrix',
     'RandomCoordinate',
-    'StructuredSphericalDirections',
+    'QRDirections',
     'GaussianDirections',
-    'SphericalDirections'
+    'SphericalDirections',
+    'RandomHouseholder'
 )

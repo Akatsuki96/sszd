@@ -1,0 +1,4 @@
+/home/akatsuki/miniconda3/envs/sszd_env/lib/python3.12/site-packages/falkon/utils/switches.py:27: UserWarning: Failed to initialize CUDA library; falling back to CPU. Set 'use_cpu' to True to avoid this warning.
+  warnings.warn(get_error_str("CUDA", None))
+/home/akatsuki/miniconda3/envs/sszd_env/lib/python3.12/site-packages/falkon/utils/switches.py:27: UserWarning: Failed to initialize CUDA library; falling back to CPU. Set 'use_cpu' to True to avoid this warning.
+  warnings.warn(get_error_str("CUDA", None))
