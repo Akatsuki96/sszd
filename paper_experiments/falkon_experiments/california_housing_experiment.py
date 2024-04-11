@@ -45,6 +45,7 @@ M = int(np.sqrt(X_tr.shape[0]))
 
 d = X_tr.shape[1] + 1
 
+
 transform = PositiveTransform(1e-5)
 
 X_tr, X_vl, y_tr, y_vl = torch.from_numpy(X_tr), torch.from_numpy(X_vl), torch.from_numpy(y_tr), torch.from_numpy(y_vl)
