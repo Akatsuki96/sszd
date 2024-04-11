@@ -1,7 +1,3 @@
-/home/akatsuki/miniconda3/envs/sszd_env/lib/python3.12/site-packages/falkon/utils/switches.py:27: UserWarning: Failed to initialize CUDA library; falling back to CPU. Set 'use_cpu' to True to avoid this warning.
-  warnings.warn(get_error_str("CUDA", None))
-/home/akatsuki/miniconda3/envs/sszd_env/lib/python3.12/site-packages/falkon/utils/switches.py:27: UserWarning: Failed to initialize CUDA library; falling back to CPU. Set 'use_cpu' to True to avoid this warning.
-  warnings.warn(get_error_str("CUDA", None))
 tensor(0) tensor(431)
 [1/10] Training with sszd
 [KeOps] Warning : Cuda libraries were not detected on the system or could not be loaded ; using cpu only mode
@@ -56,6 +52,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.0644128013900564	validation error = 0.06465078042378064
 	[--] training error = 0.06431300150795759	validation error = 0.06454964300001681
 	[--] training error = 0.06444986684342162	validation error = 0.06468830835017444
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [2/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -109,6 +106,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.06615492534668943	validation error = 0.06640372464740606
 	[--] training error = 0.06580584693701556	validation error = 0.06605105310476274
 	[--] training error = 0.0655188515830581	validation error = 0.06576170669556486
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [3/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -162,6 +160,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.07486195839162277	validation error = 0.07524397186663324
 	[--] training error = 0.07467543850245247	validation error = 0.0750552604340251
 	[--] training error = 0.07388463632617628	validation error = 0.07425533066034318
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [4/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -215,6 +214,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.07148291860509477	validation error = 0.07180050242027142
 	[--] training error = 0.0719349330304596	validation error = 0.07225792454859357
 	[--] training error = 0.07214699849547185	validation error = 0.07247254258802928
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [5/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -268,6 +268,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.06918963454235415	validation error = 0.0694983818771518
 	[--] training error = 0.06936010999641914	validation error = 0.06967105825004948
 	[--] training error = 0.0689555019357244	validation error = 0.06926281108103781
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [6/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -321,6 +322,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.07067094535498265	validation error = 0.07097807322860968
 	[--] training error = 0.06989954042159355	validation error = 0.07019780963317622
 	[--] training error = 0.07015273249106338	validation error = 0.07045401182608
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [7/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -374,6 +376,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.06612152641906816	validation error = 0.06637481136025833
 	[--] training error = 0.06584820126938717	validation error = 0.0660982774497532
 	[--] training error = 0.06581302196117328	validation error = 0.06606279106030698
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [8/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -427,6 +430,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.06404568555893093	validation error = 0.0642967939944616
 	[--] training error = 0.06370011386242613	validation error = 0.06394670557874062
 	[--] training error = 0.06349247198409687	validation error = 0.06373620991375624
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [9/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -480,6 +484,7 @@ tensor(0) tensor(431)
 	[--] training error = 0.06672623236499936	validation error = 0.06700161653368564
 	[--] training error = 0.06574515017568562	validation error = 0.06600793106371965
 	[--] training error = 0.06592179692135193	validation error = 0.06618705932695236
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
 [10/10] Training with sszd
 	[--] training error = 0.13287442285795398	validation error = 0.13378314680027517
@@ -533,4 +538,5 @@ tensor(0) tensor(431)
 	[--] training error = 0.06937268975891463	validation error = 0.06966468127880562
 	[--] training error = 0.06919363335277066	validation error = 0.06948353777355767
 	[--] training error = 0.06939767782454777	validation error = 0.06968988310048826
+51 [1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 -------------------------------------------------------
