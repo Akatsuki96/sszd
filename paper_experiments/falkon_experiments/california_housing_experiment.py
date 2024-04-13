@@ -207,8 +207,8 @@ def main(args):
     generator = torch.Generator()
     generator.manual_seed(seed)
     opt = get_algorithm(None, d, T, args.opt_name, args)
-#    x0 = torch.full((d  , ), 1.0, dtype=torch.float64)
-    x0 = torch.full((d  , ), 5.0, dtype=torch.float64)
+    x0 = torch.full((d  , ), 1.0, dtype=torch.float64)
+#    x0 = torch.full((d  , ), 5.0, dtype=torch.float64)
 
     training_errors, validation_errors, test_errors = run_experiment(x0, opt, T, reps=args.reps, seed = 1231414)
 
