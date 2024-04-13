@@ -39,7 +39,10 @@ class STP(Optimizer):
             if return_trace:
                 iterates.append(x_k.cpu().clone())
                 fun_values.append(self.target(x_k).item())
-                num_evals.append(3)
+                if k + 3 > T:
+                    num_evals.append(T - k)
+                else:
+                    num_evals.append(3)
             iters += 1
             k += 3
         return self._build_result(x_k, fun_values = fun_values, iterates=iterates, num_evals=num_evals)                  
