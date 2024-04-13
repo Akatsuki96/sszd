@@ -1,5 +1,5 @@
 nohup python3 htru2_experiment.py "sszd" 500 --sszd-alpha 15.0 --sszd-l 4 --sszd-h 1e-3 --sszd-dirtype 'orthogonal' --reps 10 --out-file "sszd_4_orth"  &
-nohup python3 htru2_experiment.py "sszd" 500 --sszd-alpha 20.0 --sszd-l 9 --sszd-h 1e-5 --sszd-dirtype 'orthogonal' --reps 10 --out-file "sszd_9_orth"  &
+nohup python3 htru2_experiment.py "sszd" 500 --sszd-alpha 15.0 --sszd-l 9 --sszd-h 1e-5 --sszd-dirtype 'orthogonal' --reps 10 --out-file "sszd_9_orth"  &
 wait
 nohup python3 htru2_experiment.py 'ds'  500  --ds-theta 0.5 --ds-rho 2.0  --ds-min-alpha 1e-9 --ds-max-alpha 100.0 --ds-alpha 10.0 --ds-l 1  --ds-dirtype 'spherical' --ds-constant 0.05 --reps 10 --out-file 'probds_sp_2' &
 nohup python3 htru2_experiment.py 'ds'  500  --ds-theta 0.5 --ds-rho 2.0  --ds-min-alpha 1e-9 --ds-max-alpha 100.0 --ds-alpha 10.0 --ds-l 1  --ds-dirtype 'orthogonal' --ds-constant 0.05 --reps 10 --out-file 'probds_ortho_2' &
