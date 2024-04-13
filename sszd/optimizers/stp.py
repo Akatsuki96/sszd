@@ -1,5 +1,4 @@
 import torch
-import tqdm
 import numpy as np 
 from typing import Callable, Optional, Any
 from sszd.optimizers.opt import Optimizer

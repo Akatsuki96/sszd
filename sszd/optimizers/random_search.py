@@ -1,5 +1,4 @@
 import torch
-import tqdm
 import numpy as np 
 from typing import Callable, Optional, Any
 from sszd.optimizers.opt import Optimizer
@@ -24,8 +23,6 @@ class RandomSearch(Optimizer):
             iterates = [x_k.cpu().clone()]
             fun_values = [self.target(x_k)]
             num_evals = [1]
-        iterator = tqdm.tqdm(range(T))
-        iterator.set_description("[RS]")
         current_best = (x_k, self.target(x_k, sample_z()))
         while k < T:
             x_new = x_k + self.sigma * torch.randn(size=x0.shape, generator=self.gen, dtype=self.dtype, device=self.device)

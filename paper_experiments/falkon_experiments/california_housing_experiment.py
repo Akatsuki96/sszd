@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from math import sqrt
 
+
 sys.path.append("../")
 
 from utils import read_htru2_data
@@ -29,7 +30,7 @@ X, y = datasets.fetch_california_housing(return_X_y=True)
 
 X = (X - X.mean()) / X.std()
 
-y = (y - y.min()) / (y.max() - y.min())
+y = ((y - y.min()) / (y.max() - y.min()))
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.33, random_state=rnd_state, shuffle=True)
 
@@ -206,7 +207,8 @@ def main(args):
     generator = torch.Generator()
     generator.manual_seed(seed)
     opt = get_algorithm(None, d, T, args.opt_name, args)
-    x0 = torch.full((d  , ), 1.0, dtype=torch.float64)
+#    x0 = torch.full((d  , ), 1.0, dtype=torch.float64)
+    x0 = torch.full((d  , ), 5.0, dtype=torch.float64)
 
     training_errors, validation_errors, test_errors = run_experiment(x0, opt, T, reps=args.reps, seed = 1231414)
 

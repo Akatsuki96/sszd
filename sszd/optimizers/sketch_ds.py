@@ -1,5 +1,4 @@
 import torch
-import tqdm
 from typing import Callable, Optional, Any
 from sszd.optimizers.opt import Optimizer
 from sszd.direction_matrices.direction_matrix import DirectionMatrix
